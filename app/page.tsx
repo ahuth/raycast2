@@ -1,10 +1,10 @@
-import {add} from '../build/release';
+import Renderer from './renderer';
 
 export default function Home() {
   return (
     <main>
       <h1>hello world</h1>
-      <span>{add(1, 2)}</span>
+      <Renderer />
     </main>
   )
 }
