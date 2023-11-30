@@ -1,4 +1,4 @@
-import Renderer from './renderer';
+import Renderer from '@/components/Renderer';
 
 export default function Home() {
   return (
