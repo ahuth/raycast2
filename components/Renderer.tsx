@@ -2,10 +2,12 @@ import dynamic from 'next/dynamic';
 
 export default dynamic(
   async () => {
-    const {add} = await import('@/build/release.wasm');
+    const {update} = await import('@/build/release.wasm');
+
+    update(true, false, false, false);
 
     return function Renderer() {
-      return <span>{add(1, 2)}</span>
+      return <span>Hi</span>
     };
   },
 );
