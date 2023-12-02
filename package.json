@@ -2,10 +2,10 @@
   "name": "raycast2",
   "private": true,
   "scripts": {
-    "build:wasm": "asc assembly/index.ts --target release",
+    "build:wasm": "asc assembly/index.ts --target release && npm run build:wasm-types",
     "build:wasm-types": "find build -name '*.d.ts' ! -name '*.wasm.d.ts' -exec sh -c 'cp \"$1\" \"build/$(basename \"$1\" .d.ts).wasm.d.ts\"' _ {} \\;",
     "build:next": "next build",
-    "build": "npm run build:wasm && npm run build:wasm-types && npm run build:next",
+    "build": "npm run build:wasm && npm run build:next",
     "dev": "next dev",
     "lint": "next lint",
     "prod": "next start",
