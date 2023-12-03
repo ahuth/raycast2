@@ -1,5 +1,10 @@
 const STEP_SIZE: f32 = 0.045;
 
+// https://www.assemblyscript.org/concepts.html#special-imports
+// Provide an implementation for abort. AssemblyScript provides one itself in release.js, but I
+// can't figure out how to get that file working in Next.JS.
+function abort(message: usize, fileName: usize, line: u32, column: u32): void {}
+
 // The map, stored as a list of 16-bit numbers, where each bit encodes whether a "cell" is a wall
 // or not.
 //
