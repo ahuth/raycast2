@@ -2,33 +2,13 @@
   "name": "raycast2",
   "private": true,
   "scripts": {
-    "build:wasm": "asc assembly/index.ts --target release",
-    "build:next": "next build",
-    "build": "npm run build:wasm && npm run build:next",
-    "dev": "next dev",
-    "lint": "next lint",
-    "prod": "next start",
-    "start": "npm run dev",
-    "types:wasm": "tsc --noEmit --project assembly/tsconfig.json",
-    "types:next": "tsc --noEmit",
-    "types": "npm run types:wasm && npm run types:next",
-    "validate": "npm run lint && npm run types"
-  },
-  "dependencies": {
-    "next": "14.0.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "build": "asc assembly/index.ts --target release",
+    "dist": "npm run build:release && mkdir -p dist && cp -r ./build ./dist && cp index.html dist",
+    "start": "npx serve . ",
+    "types:next": "tsc --noEmit"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0",
-    "@types/react": "^18.2.39",
-    "@types/react-dom": "^18.2.17",
     "assemblyscript": "^0.27.22",
-    "autoprefixer": "^10.4.16",
-    "eslint": "^8.54.0",
-    "eslint-config-next": "14.0.3",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.5",
     "typescript": "^5.3.2"
   }
 }
