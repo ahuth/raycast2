@@ -3,7 +3,7 @@ const FOV: f32 = NativeMathf.PI / 2.7;
 const FOV_HALF: f32 = FOV / 2;
 const PI_2: f32 = NativeMathf.PI / 2;
 const STEP_SIZE: f32 = 0.045;
-const ANGLE_STEP = FOV / NUM_RAYS;
+const ANGLE_STEP: f32 = FOV / NUM_RAYS;
 
 // The map, stored as a list of 16-bit numbers, where each bit encodes whether a "cell" is a wall
 // or not.
@@ -20,6 +20,7 @@ const MAP: u16[] = [
   0b1111111111111111,
 ];
 
+// Global, mutable state :/
 let stateX: f32 = 1.5;
 let stateY: f32 = 1.5;
 let stateΘ: f32 = 0.0;
