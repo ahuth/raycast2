@@ -103,7 +103,7 @@ function distance(a: f32, b: f32): f32 {
 // Return the nearest wall a ray intersects with a horizontal grid line.
 function getHorizontalIntersection(angle: f32): f32 {
   // Whether an angle is facing "up" or not.
-  const up = NativeMathf.abs(NativeMathf.floor((angle / 2) % 2)) !== 0;
+  const up = NativeMathf.abs(NativeMathf.floor((angle / NativeMathf.PI) % 2)) !== 0;
 
   const firstY: f32 = up ? NativeMathf.ceil(stateY) - stateY : NativeMathf.floor(stateY) - stateY;
   const firstX: f32 = -firstY / NativeMathf.tan(stateΘ);
@@ -117,7 +117,7 @@ function getHorizontalIntersection(angle: f32): f32 {
 // Return the nearest wall a ray intersects with a vertical grid line.
 function getVerticalIntersection(angle: f32): f32 {
   // Whether an angle is facing "right" or not.
-  const right = NativeMathf.abs(NativeMathf.floor((angle - PI_2) % 2)) !== 0;
+  const right = NativeMathf.abs(NativeMathf.floor(((angle - PI_2) / NativeMathf.PI) % 2)) !== 0;
 
   const firstX: f32 = right ? NativeMathf.ceil(stateX) - stateX : NativeMathf.floor(stateX) - stateX;
   const firstY: f32 = -NativeMathf.tan(stateΘ) / firstX;
