@@ -19,11 +19,14 @@
 
       const canvas = document.querySelector("#canvas");
       const context = canvas.getContext("2d");
-      const linearMemory = new Float32Array(memory.buffer);
+      const mem = new DataView(memory.buffer);
 
-      const mem = linearMemory.slice(0, NUM_RAYS);
       cast();
-      console.log('@@@', mem);
+
+      for (let i = 0; i < NUM_RAYS; i++) {
+        const distance = mem.getFloat32(i, true);
+        console.log('@@@', i, distance);
+      }
     </script>
   </body>
 </html>
