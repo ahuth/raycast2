@@ -106,10 +106,10 @@ function getHorizontalIntersection(angle: f32): f32 {
   const up = NativeMathf.abs(NativeMathf.floor((angle / NativeMathf.PI) % 2)) !== 0;
 
   const firstY: f32 = up ? NativeMathf.ceil(stateY) - stateY : NativeMathf.floor(stateY) - stateY;
-  const firstX: f32 = -firstY / NativeMathf.tan(stateΘ);
+  const firstX: f32 = -firstY / NativeMathf.tan(angle);
 
   const deltaY: f32 = up ? 1.0 : -1.0;
-  const deltaX: f32 = -deltaY / NativeMathf.tan(stateΘ);
+  const deltaX: f32 = -deltaY / NativeMathf.tan(angle);
 
   return findWall(firstX, firstY, deltaX, deltaY);
 }
@@ -120,10 +120,10 @@ function getVerticalIntersection(angle: f32): f32 {
   const right = NativeMathf.abs(NativeMathf.floor(((angle - PI_2) / NativeMathf.PI) % 2)) !== 0;
 
   const firstX: f32 = right ? NativeMathf.ceil(stateX) - stateX : NativeMathf.floor(stateX) - stateX;
-  const firstY: f32 = -NativeMathf.tan(stateΘ) / firstX;
+  const firstY: f32 = -NativeMathf.tan(angle) / firstX;
 
   const deltaX: f32 = right ? 1.0 : -1.0;
-  const deltaY: f32 = deltaX * -NativeMathf.tan(stateΘ);
+  const deltaY: f32 = deltaX * -NativeMathf.tan(angle);
 
   return findWall(firstX, firstY, deltaX, deltaY);
 }
