@@ -77,7 +77,7 @@ export function cast(): void {
     const adjustedDistance = distance * NativeMathf.cos(angle - stateΘ);
 
     // Store the distance in memory.
-    store<f32>(i, adjustedDistance);
+    store<f32>(i << 2, adjustedDistance);
   }
 }
 
