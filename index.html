@@ -1,32 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="data:,">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Raycasting engine in WebAssembly" />
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Raycast2</title>
   </head>
   <body>
-    <canvas id="canvas" style="image-rendering: crisp-edges; width: 100%"></canvas>
-    <script type="module">
-      import {
-        memory,
-        cast,
-        update,
-        NUM_RAYS,
-      } from "./build/release.js";
-
-      const canvas = document.querySelector("#canvas");
-      const context = canvas.getContext("2d");
-      const mem = new DataView(memory.buffer);
-
-      cast();
-
-      for (let i = 0; i < NUM_RAYS; i++) {
-        const distance = mem.getFloat32(i, true);
-        console.log('@@@', i, distance);
-      }
-    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

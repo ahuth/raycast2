@@ -3,7 +3,7 @@ const FOV: f32 = NativeMathf.PI / 2.7;
 const FOV_HALF: f32 = FOV / 2;
 const PI_2: f32 = NativeMathf.PI / 2;
 const STEP_SIZE: f32 = 0.045;
-const ANGLE_STEP: f32 = FOV / NUM_RAYS;
+const ANGLE_STEP = FOV / NUM_RAYS;
 
 // The map, stored as a list of 16-bit numbers, where each bit encodes whether a "cell" is a wall
 // or not.
@@ -20,7 +20,6 @@ const MAP: u16[] = [
   0b1111111111111111,
 ];
 
-// Global, mutable state :/
 let stateX: f32 = 1.5;
 let stateY: f32 = 1.5;
 let stateΘ: f32 = 0.0;
@@ -29,8 +28,8 @@ let stateΘ: f32 = 0.0;
  * Update the player state based on input.
  */
 export function update(up: bool, down: bool, left: bool, right: bool): void {
-  let prevX = stateX;
-  let prevY = stateY;
+  const prevX = stateX;
+  const prevY = stateY;
 
   if (up) {
     stateX += NativeMathf.cos(stateΘ) * STEP_SIZE;
@@ -78,7 +77,7 @@ export function cast(): void {
     const adjustedDistance = distance * NativeMathf.cos(angle - stateΘ);
 
     // Store the distance in memory.
-    store<f32>(i * 4, adjustedDistance);
+    store<f32>(i, adjustedDistance);
   }
 }
 
@@ -103,13 +102,13 @@ function distance(a: f32, b: f32): f32 {
 // Return the nearest wall a ray intersects with a horizontal grid line.
 function getHorizontalIntersection(angle: f32): f32 {
   // Whether an angle is facing "up" or not.
-  const up = NativeMathf.abs(NativeMathf.floor((angle / NativeMathf.PI) % 2)) !== 0;
+  const up = NativeMathf.abs(NativeMathf.floor((angle / 2) % 2)) !== 0;
 
   const firstY: f32 = up ? NativeMathf.ceil(stateY) - stateY : NativeMathf.floor(stateY) - stateY;
-  const firstX: f32 = -firstY / NativeMathf.tan(angle);
+  const firstX: f32 = -firstY / NativeMathf.tan(stateΘ);
 
   const deltaY: f32 = up ? 1.0 : -1.0;
-  const deltaX: f32 = -deltaY / NativeMathf.tan(angle);
+  const deltaX: f32 = -deltaY / NativeMathf.tan(stateΘ);
 
   return findWall(firstX, firstY, deltaX, deltaY);
 }
@@ -117,13 +116,13 @@ function getHorizontalIntersection(angle: f32): f32 {
 // Return the nearest wall a ray intersects with a vertical grid line.
 function getVerticalIntersection(angle: f32): f32 {
   // Whether an angle is facing "right" or not.
-  const right = NativeMathf.abs(NativeMathf.floor(((angle - PI_2) / NativeMathf.PI) % 2)) !== 0;
+  const right = NativeMathf.abs(NativeMathf.floor((angle - PI_2) % 2)) !== 0;
 
   const firstX: f32 = right ? NativeMathf.ceil(stateX) - stateX : NativeMathf.floor(stateX) - stateX;
-  const firstY: f32 = -NativeMathf.tan(angle) / firstX;
+  const firstY: f32 = -NativeMathf.tan(stateΘ) / firstX;
 
   const deltaX: f32 = right ? 1.0 : -1.0;
-  const deltaY: f32 = deltaX * -NativeMathf.tan(angle);
+  const deltaY: f32 = deltaX * -NativeMathf.tan(stateΘ);
 
   return findWall(firstX, firstY, deltaX, deltaY);
 }
