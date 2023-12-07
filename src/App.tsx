@@ -1,8 +1,17 @@
-import {memory} from '../build/release';
+import {useEffect} from 'react';
+import {memory, cast, NUM_RAYS} from '../build/release';
 
 export default function App() {
-  const mem = new DataView(memory.buffer);
-  console.log(mem);
+  useEffect(() => {
+    const data = new DataView(memory.buffer);
+
+    cast();
+
+    for (let i = 0; i < NUM_RAYS.value; i++) {
+      console.log('@@@', i, data.getFloat32(i << 2, true));
+    }
+  }, []);
+
 
   return (
     <>
