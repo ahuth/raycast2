@@ -131,20 +131,25 @@ function getVerticalIntersection(angle: f32): f32 {
  * Move in discrete steps until a wall is found.
  */
 function findWall(x: f32, y: f32, deltaX: f32, deltaY: f32): f32 {
-  let currentX: f32 = x;
-  let currentY: f32 = y;
+  let nextX: f32 = x;
+  let nextY: f32 = y;
 
   // Stop looking after 255 iterations if we haven't found a wall.
   for (let i = 0; i < 256; i++) {
+    // For some reason we do this... I don't really get it, but the tutorial did it.
+    // https://github.com/grantshandy/wasm4-raycaster/blame/5e60c1cd3bbd3e3f767cd85c1c21918b9047ddb2/src/lib.rs#L237
+    const currentX = nextX + stateX;
+    const currentY = nextY + stateY;
+
     if (isWall(currentX, currentY)) {
       break;
     }
 
     // Didn't hit a wall, so advance.
-    currentX += deltaX;
-    currentY += deltaY;
+    nextX += deltaX;
+    nextY += deltaY;
   }
 
   // Return the distance between the original coordinate and the wall intersection.
-  return distance(currentX - x, currentY - y);
+  return distance(nextX, nextY);
 }
