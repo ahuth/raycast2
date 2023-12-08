@@ -139,7 +139,8 @@ function findWall(x: f32, y: f32, deltaX: f32, deltaY: f32): f32 {
 
   // Stop looking after 255 iterations if we haven't found a wall.
   for (let i = 0; i < 256; i++) {
-    // For some reason we do this... I don't really get it, but the tutorial did it.
+    // For some reason we do this... I don't really get it, but the tutorial did it. I guess the
+    // "first" x and y values are relative to the player position or something.
     // https://github.com/grantshandy/wasm4-raycaster/blame/5e60c1cd3bbd3e3f767cd85c1c21918b9047ddb2/src/lib.rs#L237
     const currentX = nextX + stateX;
     const currentY = nextY + stateY;
