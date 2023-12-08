@@ -85,8 +85,9 @@ export function cast(): void {
  * Is a point inside a wall.
  */
 function isWall(x: f32, y: f32): bool {
+  if (x < 0 || x >= 16) { return true; }
+  if (y < 0 || y >= 8) { return true; }
   const row = MAP[u16(y)];
-  if (!row) { return true; }
   const col = 0b1 << u16(x);
   const val = row & col;
   return val != 0;
