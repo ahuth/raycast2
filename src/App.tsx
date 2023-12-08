@@ -1,14 +1,14 @@
 import {useEffect} from 'react';
-import {memory, cast, NUM_RAYS} from '../build/release';
+import {cast, RAYS} from '../build/release';
 
 export default function App() {
   useEffect(() => {
-    const data = new DataView(memory.buffer);
+    const rays = RAYS.value;
 
     cast();
 
-    for (let i = 0; i < NUM_RAYS.value; i++) {
-      console.log('@@@', i, data.getFloat32(i << 2, true));
+    for (let i = 0; i < rays.length; i++) {
+      console.log('@@@', i, rays[i]);
     }
   }, []);
 

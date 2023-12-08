@@ -1,9 +1,9 @@
-export const NUM_RAYS: f32 = 320;
+export const NUM_RAYS: u32 = 320;
 const FOV: f32 = NativeMathf.PI / 2.7;
 const FOV_HALF: f32 = FOV / 2;
 const PI_2: f32 = NativeMathf.PI / 2;
 const STEP_SIZE: f32 = 0.045;
-const ANGLE_STEP = FOV / NUM_RAYS;
+const ANGLE_STEP = FOV / f32(NUM_RAYS);
 
 // The map, stored as a list of 16-bit numbers, where each bit encodes whether a "cell" is a wall
 // or not.
@@ -19,6 +19,8 @@ const MAP: u16[] = [
   0b1000100000001101,
   0b1111111111111111,
 ];
+
+export const RAYS = new Float32Array(NUM_RAYS);
 
 let stateX: f32 = 1.5;
 let stateY: f32 = 1.5;
@@ -65,8 +67,8 @@ export function cast(): void {
   // casting rays.
   const startingAngle = stateΘ + FOV_HALF;
 
-  for (let i: u16 = 0; i < NUM_RAYS; i++) {
-    const angle = startingAngle - i * ANGLE_STEP;
+  for (let i = 0; i < RAYS.length; i++) {
+    const angle = startingAngle - f32(i) * ANGLE_STEP;
 
     // Get both the horizontal and verticle intersections and pick the closest.
     const h_dist = getHorizontalIntersection(angle);
@@ -77,7 +79,7 @@ export function cast(): void {
     const adjustedDistance = distance * NativeMathf.cos(angle - stateΘ);
 
     // Store the distance in memory.
-    store<f32>(i << 2, adjustedDistance);
+    RAYS[i] = adjustedDistance;
   }
 }
 
