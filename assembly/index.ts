@@ -106,7 +106,7 @@ function getHorizontalIntersection(angle: f32): f32 {
   // Whether an angle is facing "up" or not.
   const up = NativeMathf.abs(NativeMathf.floor((angle / 2) % 2)) !== 0;
 
-  const firstY: f32 = up ? NativeMathf.ceil(stateY) - stateY : NativeMathf.floor(stateY) - stateY;
+  const firstY: f32 = up ? NativeMathf.ceil(stateY) : NativeMathf.floor(stateY);
   const firstX: f32 = -firstY / NativeMathf.tan(angle);
 
   const deltaY: f32 = up ? 1.0 : -1.0;
@@ -120,7 +120,7 @@ function getVerticalIntersection(angle: f32): f32 {
   // Whether an angle is facing "right" or not.
   const right = NativeMathf.abs(NativeMathf.floor((angle - PI_2) % 2)) !== 0;
 
-  const firstX: f32 = right ? NativeMathf.ceil(stateX) - stateX : NativeMathf.floor(stateX) - stateX;
+  const firstX: f32 = right ? NativeMathf.ceil(stateX) : NativeMathf.floor(stateX);
   const firstY: f32 = -NativeMathf.tan(angle) / firstX;
 
   const deltaX: f32 = right ? 1.0 : -1.0;
@@ -133,26 +133,17 @@ function getVerticalIntersection(angle: f32): f32 {
  * Move in discrete steps until a wall is found.
  */
 function findWall(x: f32, y: f32, deltaX: f32, deltaY: f32): f32 {
-  let nextX: f32 = x;
-  let nextY: f32 = y;
-
   // Stop looking after 255 iterations if we haven't found a wall.
   for (let i = 0; i < 256; i++) {
-    // For some reason we do this... I don't really get it, but the tutorial did it. I guess the
-    // "first" x and y values are relative to the player position or something.
-    // https://github.com/grantshandy/wasm4-raycaster/blame/5e60c1cd3bbd3e3f767cd85c1c21918b9047ddb2/src/lib.rs#L237
-    const currentX = nextX + stateX;
-    const currentY = nextY + stateY;
-
-    if (isWall(currentX, currentY)) {
+    if (isWall(x, y)) {
       break;
     }
 
     // Didn't hit a wall, so advance.
-    nextX += deltaX;
-    nextY += deltaY;
+    x += deltaX;
+    y += deltaY;
   }
 
   // Return the distance between the original coordinate and the wall intersection.
-  return distance(nextX, nextY);
+  return distance(x, y);
 }
