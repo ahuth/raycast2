@@ -1,22 +1,22 @@
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 import {memory, cast, NUM_RAYS} from '../build/release';
+import draw from './draw';
 
 export default function App() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
   useEffect(() => {
-    const data = new DataView(memory.buffer);
-
-    cast();
-
-    for (let i = 0; i < NUM_RAYS.value; i++) {
-      console.log('@@@', i, data.getFloat32(i << 2, true));
+    if (canvasRef.current) {
+      const context = canvasRef.current.getContext('2d')!;
+      const data = new DataView(memory.buffer);
+      cast();
+      draw(context, data, NUM_RAYS.value);
     }
   }, []);
 
-
   return (
     <>
-      <p>Hello world</p>
-      <canvas id="canvas" />
+      <canvas ref={canvasRef} height="200" width="320" style={{maxHeight: "100vh", width: "100%"}} />
     </>
   )
 }
