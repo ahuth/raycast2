@@ -20,8 +20,6 @@ const MAP: u16[] = [
   0b1111111111111111,
 ];
 
-export const RAYS = new Float32Array(NUM_RAYS);
-
 let stateX: f32 = 1.5;
 let stateY: f32 = 1.5;
 let stateΘ: f32 = 0.0;
@@ -67,7 +65,7 @@ export function cast(): void {
   // casting rays.
   const startingAngle = stateΘ + FOV_HALF;
 
-  for (let i = 0; i < RAYS.length; i++) {
+  for (let i: u32 = 0; i < u32(NUM_RAYS); i++) {
     const angle = startingAngle - f32(i) * ANGLE_STEP;
 
     // Get both the horizontal and verticle intersections and pick the closest.
@@ -78,8 +76,9 @@ export function cast(): void {
     // Adjust the distance to prevent a fishbowl effect.
     const adjustedDistance = distance * NativeMathf.cos(angle - stateΘ);
 
-    // Store the distance in memory.
-    RAYS[i] = adjustedDistance;
+    // Store the distance in memory. Use the `--memoryBase` compiler flag to make sure
+    // AssemblyScript doesn't overwrite this memory for the data structures it allocates for.
+    store<f32>(i << 2, adjustedDistance);
   }
 }
 

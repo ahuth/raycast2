@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build:wasm": "asc assembly/index.ts --target release",
+    "build:wasm": "asc assembly/index.ts --target release --memoryBase=1280",
     "build:js": "tsc && vite build",
     "build": "npm run build:wasm && npm run build:js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
