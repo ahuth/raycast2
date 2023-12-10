@@ -1,7 +1,8 @@
 export const NUM_RAYS: u32 = 320;
 const FOV: f32 = NativeMathf.PI / 2.7;
 const FOV_HALF: f32 = FOV / 2;
-const PI_2: f32 = NativeMathf.PI / 2;
+const PI_1_2: f32 = NativeMathf.PI / 2;
+const PI_3_2: f32 = NativeMathf.PI * 3 / 2;
 const STEP_SIZE: f32 = 0.045;
 const ANGLE_STEP = FOV / f32(NUM_RAYS);
 
@@ -104,7 +105,7 @@ function distance(a: f32, b: f32): f32 {
 // Return the nearest wall a ray intersects with a horizontal grid line.
 function getHorizontalIntersection(angle: f32): f32 {
   // Whether an angle is facing "up" or not.
-  const up = NativeMathf.abs(NativeMathf.floor((angle / 2) % 2)) !== 0;
+  const up = angle > 0 && angle < NativeMathf.PI;
 
   const firstY: f32 = up ? NativeMathf.ceil(stateY) : NativeMathf.floor(stateY);
   const firstX: f32 = -firstY / NativeMathf.tan(angle);
@@ -118,7 +119,7 @@ function getHorizontalIntersection(angle: f32): f32 {
 // Return the nearest wall a ray intersects with a vertical grid line.
 function getVerticalIntersection(angle: f32): f32 {
   // Whether an angle is facing "right" or not.
-  const right = NativeMathf.abs(NativeMathf.floor((angle - PI_2) % 2)) !== 0;
+  const right = angle < PI_1_2 || angle > PI_3_2;
 
   const firstX: f32 = right ? NativeMathf.ceil(stateX) : NativeMathf.floor(stateX);
   const firstY: f32 = -NativeMathf.tan(angle) / firstX;
