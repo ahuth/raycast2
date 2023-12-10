@@ -9,7 +9,7 @@ const ANGLE_STEP = FOV / f32(NUM_RAYS);
 // The map, stored as a list of 16-bit numbers, where each bit encodes whether a "cell" is a wall
 // or not.
 //
-// Note that this does mean our Y axis is flipped from what you would normally expect.
+// Note that this means both axes are flipped from what you'd normally expected.
 const MAP: u16[] = [
   0b1111111111111111,
   0b1000001010000101,
@@ -43,10 +43,14 @@ export function update(up: bool, down: bool, left: bool, right: bool): void {
   }
 
   if (right) {
+    // Subtract instead of add because our coordinate system is reversed due to how the map is
+    // being represented.
     stateΘ -= STEP_SIZE;
   }
 
   if (left) {
+    // Add instead of subtract because our coordinate system is reversed due to how the map is
+    // being represented.
     stateΘ += STEP_SIZE;
   }
 
@@ -104,28 +108,42 @@ function distance(a: f32, b: f32): f32 {
 
 // Return the nearest wall a ray intersects with a horizontal grid line.
 function getHorizontalIntersection(angle: f32): f32 {
-  // Whether an angle is facing "up" or not.
+  // Whether an angle is facing "up" or not. Think the top half of a unit circle, although in our
+  // coordinate system this is actually facing down.
   const up = angle > 0 && angle < NativeMathf.PI;
 
+  // The Y coordinate of the first vertical grid line this ray intersects with. This is easy to get
+  // because in our coordinate system all grid lines are on whole number values, so we can get it
+  // by using `ceil` or `floor`.
   const firstY: f32 = up ? NativeMathf.ceil(stateY) : NativeMathf.floor(stateY);
-  const firstX = stateX + (stateY - firstY) / NativeMathf.tan(angle);
+  // Get the X coordinate of the first vertical grid line intersection via tan(a) = opp / adj.
+  const opp = firstY - stateY;
+  const adj = opp / NativeMathf.tan(angle);
+  const firstX = stateX + adj;
 
   const deltaY: f32 = up ? 1.0 : -1.0;
-  const deltaX: f32 = -deltaY / NativeMathf.tan(angle);
+  const deltaX: f32 = deltaY / NativeMathf.tan(angle);
 
   return findWall(firstX, firstY, deltaX, deltaY);
 }
 
 // Return the nearest wall a ray intersects with a vertical grid line.
 function getVerticalIntersection(angle: f32): f32 {
-  // Whether an angle is facing "right" or not.
+  // Whether an angle is facing "right" or not. Think the right half of a unit circle, although in
+  // our coordinate system this is actually facing left.
   const right = angle < PI_1_2 || angle > PI_3_2;
 
+  // The X coordinate of the first vertical grid line this ray intersects with. This is easy to get
+  // because in our coordinate system all grid lines are on whole number values, so we can get it
+  // by using `ceil` or `floor`.
   const firstX: f32 = right ? NativeMathf.ceil(stateX) : NativeMathf.floor(stateX);
-  const firstY = stateY + (stateX - firstX) * NativeMathf.tan(angle);
+  // Get the Y coordinate of the first vertical grid line intersection via tan(a) = opp / adj.
+  const adj = firstX - stateX;
+  const opp = adj * NativeMathf.tan(angle);
+  const firstY = stateY + opp;
 
   const deltaX: f32 = right ? 1.0 : -1.0;
-  const deltaY: f32 = -deltaX * NativeMathf.tan(angle);
+  const deltaY: f32 = deltaX * NativeMathf.tan(angle);
 
   return findWall(firstX, firstY, deltaX, deltaY);
 }
