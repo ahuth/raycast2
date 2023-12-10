@@ -6,7 +6,7 @@ export default function draw(context: CanvasRenderingContext2D, data: DataView, 
   for (let i = 0; i < numRays; i++) {
     const distance = data.getFloat32(i << 2, true);
     const width = context.canvas.width / numRays;
-    const height = Math.min(context.canvas.height, distance * 255);
+    const height = Math.min(context.canvas.height, distance * 100);
     const x = i * width;
     const y = context.canvas.height / 2 - height / 2;
 
